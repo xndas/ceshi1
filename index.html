@@ -8,6 +8,9 @@
    <script src="https://cdnjs.cat.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3.10.0/dist/av-min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/leancloud-realtime@4.2.0/dist/realtime.browser.min.js"></script>
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+   <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+   <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -18,6 +21,8 @@
       <br>
        <h2 style="text-align:center;font-size:15px"><font face="verdana">联系人姓名</font></h2>  
        <input type="text" id="lianxi" /><br><br>
+       <h2 style="text-align:center;font-size:15px"><font face="verdana">新时间</font></h2>  
+       <input type="text" id="datepicker" value="" /><br><br>
        <h2 style="text-align:center;font-size:15px"><font face="verdana">来访时间</font></h2> <input type="datetime-local" id="myLocalDate" value="2018-09-01T15:00:00" /><br>
        <h2 style="text-align:center;font-size:15px"><font face="verdana">来访单位</font></h2> <input type="text" id="danwei" /><br>
        <h2 style="text-align:center;font-size:15px"><font face="verdana">职位</font></h2>  
@@ -40,6 +45,26 @@
       appId: APP_ID,
       appKey: APP_KEY
   });
+
+  $(function() {
+    //jQuery datepicker 設定限制日期最小最大 minDate maxDate hideIfNoPrevNext
+    $("#datepicker").datepicker({
+      //顯示上個月日期 及下個月日期 ，但是不可選的。
+      //default:false
+      showOtherMonths : true,
+      // 設置當沒有上一個/下一個可選擇的情況下，隱藏掉相應的按鈕。（默認為不可用）
+      //配合有設定最大最小時使用
+      //default:false
+      hideIfNoPrevNext : true,
+      //設置一個最小的可選日期。可以是Date對象，或者是數字（從今天算起，例如+7），
+      //或者有效的字符串('y'代表年, 'm'代表月, 'w'代表周, 'd'代表日, 例如：'+1m +7d')。
+      minDate : "-10d",
+      //  設置一個最大的可選日期。可以是Date對象，或者是數字（從今天算起，例如+7），
+      //或者有效的字符串('y'代表年, 'm'代表月, 'w'代表周, 'd'代表日, 例如：'+1m +7d')。
+      maxDate : "+10d"
+    });
+  });
+  
   function delayer(){
     window.location = "https://xndas.github.io/wancheng/";
   }
@@ -55,7 +80,7 @@
   }//messagess让页面提示的xndas网址消失，促进美观，不过会导致the network is offline
 
   function print(){
-    var z=$("#myLocalDate").val();
+    var z=$("#datepicker").val();
     var a=$("#danwei").val();
     var b=$("#zhi").val();
     var c=$("#renshu").val();
@@ -71,7 +96,7 @@
       var Ourguests = AV.Object.extend("Ourguests");
       var ourguests = new Ourguests();
       ourguests.set("1",$("#lianxi").val())//联系人
-      ourguests.set("2",$("#myLocalDate").val())//参观时间
+      ourguests.set("2",$("#datepicker").val())//参观时间
       ourguests.set("3",$("#danwei").val())//单位
       ourguests.set("4",$("#zhi").val())//职位
       ourguests.set("5",$("#renshu").val())//人数
